@@ -1,9 +1,10 @@
 import React from 'react'
+import MovieList from './MovieList'
 
 export default function Home() {
-    return (
-        <div className='home'>
-            <h1>WELCOME</h1>
-        </div>
-    )
+  return (
+    <div className='home'>
+        {/* <MovieList /> */}
+    </div>
+  )
 }

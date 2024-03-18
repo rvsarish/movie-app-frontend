@@ -1,24 +1,31 @@
-import { IconButton } from '@mui/material';
-import React, { useState } from 'react'
-import Badge from '@mui/material/Badge';
+import React from 'react'
+import { useState } from 'react'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import IconButton from '@mui/material/IconButton';
+import { Badge } from '@mui/material';
+
 
 
 export default function Counter() {
-    let [like, setLike] = useState(0);
-    let [disLike, setDisLike] = useState(0);
-    const incrementLike = () => setLike(like + 1);
-    const incrementDisLike = () => setDisLike(disLike + 1);
-    return (
-        <div>
-            <IconButton className='' color='primary' onClick={incrementLike}>
-                <Badge badgeContent={like} color="error">
-                    👍</Badge>
-            </IconButton>
-            <IconButton className='' color='primary' onClick={incrementDisLike}>
-                <Badge badgeContent={disLike} color="error">
-                    👎</Badge>
-            </IconButton>
+    let [like,setLike] = useState(0);
+    let [dislike,setDislike] = useState(0);
 
-        </div>
-    )
+    const increamentLike = () => setLike(like + 1);
+    const increamentDislike = () => setDislike(dislike + 1);
+    
+  return (
+    <div>
+        <IconButton color="primary" aria-label="add an alarm" onClick={increamentLike}>
+            <Badge badgeContent={like} color='primary'>
+            <ThumbUpIcon/>
+            </Badge>  
+      </IconButton>
+      <IconButton color="primary" aria-label="add an alarm" onClick={increamentDislike}>
+      <Badge badgeContent={dislike} color='error'>
+            <ThumbDownIcon/>
+            </Badge>  
+      </IconButton>
+    </div>
+  )
 }

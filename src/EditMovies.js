@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useFormik } from 'formik';
+import { useNavigate, useParams } from 'react-router-dom'
 import * as yup from "yup";
+import "./EditMovie.css";
 
-
-export default function EditMovies() {
-    const {id} = useParams();
-    console.log(id);
-    const [show, setShow] =useState(false);
-    const [movie,setMovie] =useState([]);
-    useEffect(()=>{
-        fetch(`https://65f16b99034bdbecc762724b.mockapi.io/movie/${id}`,{
-            method:"GET"
-        }).then((data)=>data.json())
-        .then((res)=>setMovie(res))
-        .then(()=>setShow(true))
-    },[id]);
+export default function EditMovie() {
+    const {id}=useParams();
+    const [movie,setmovie]=useState();
+    const [show,setShow]=useState(false);
+  
+    useEffect(() => {
+        fetch(`https://65f16b79034bdbecc762702f.mockapi.io/Movie/${id}`,{
+            method: "GET"
+        })
+            .then((data) => data.json())
+            .then((mv) => setmovie(mv))
+            .then(()=>setShow(true))
+    },[]);
     console.log(movie);
-
   return (
     
-    <div>{show ? <EditForm movie={movie}/> :"Loading......"}</div>
+    <div>
+        {show ? <EditForm movie={movie} />:"Loding..."}
+    </div>
   )
 }
 function EditForm({movie}){
@@ -35,32 +37,32 @@ function EditForm({movie}){
     });
     const formik = useFormik({
         initialValues: {
-            name: movie.name,
-            poster: movie.poster,
-            trailer: movie.trailer,
+            name:movie.name,
+            poster:movie.poster,
+            trailer:movie.trailer,
             rating: movie.rating,
             summary: movie.summary,
         },
         validationSchema: movieValidationSchema,
-        onSubmit: (updatedMovie) => {
-            editMovie(updatedMovie);
-            console.log(updatedMovie);
-        },
-
+        onSubmit:(updateMovie) => {
+               editMovie(updateMovie)
+               console.log(updateMovie)
+          },
+        
     });
     const navigate=useNavigate();
-    const editMovie=(updatedMovie)=>{
-        fetch(`https://65f16b99034bdbecc762724b.mockapi.io/movie/${movie.id}`,{
-            method:"PUT",
-            body:JSON.stringify(updatedMovie),
-            headers:{
-                "Content-Type" : "application/json"
-            },
-        }).then(()=>navigate("/portal/movielist"));
-    }
+    const editMovie = (updateMovie) => {
 
+        fetch(`https://65f16b79034bdbecc762702f.mockapi.io/Movie/${movie.id}`, {
+          method:"PUT",
+          body:JSON.stringify(updateMovie),
+          headers:{"Content-type":"application/json"},
+        }).then(()=>navigate("/portal/movie"));
+      };
+    
     return(
-        <form className='addForm' onSubmit={formik.handleSubmit}>
+        <div>
+            <form className='addForm' onSubmit={formik.handleSubmit}>
             <h1>Edit Movie</h1>
             <TextField id="outlined-basic"
                 label="Name"
@@ -112,7 +114,9 @@ function EditForm({movie}){
                 error={formik.touched.summary && formik.errors.summary}
                 helperText={formik.touched.summary && formik.errors.summary ? formik.errors.summary : null}
             />
-            <Button variant="contained" type='submit'>Submit</Button>
+            <Button variant="contained" type='submit'>Save changes</Button>
         </form>
-    )
+
+        </div>
+    )
 }
