@@ -1,39 +1,76 @@
 import React from 'react'
-import { TextField } from '@mui/material'
-import Button from '@mui/material/Button'
-import "../src/Register.css"
-import { useFormik } from 'formik'
-import *as yup from "yup";
-import { Link, useNavigate } from 'react-router-dom'
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { useFormik } from 'formik';
+import { Link, useNavigate } from 'react-router-dom';
+import * as yup from "yup";
+import { api } from './global';
+
 export default function Register() {
-    const navigate = useNavigate()
     const registerValidationSchema = yup.object({
-        name: yup.string().required(),
-        email: yup.string().required().min(10).email(),
-        password: yup.string().required().min(10),
-    })
+        username: yup.string().required(),
+        email: yup.string().required().email(),
+        password: yup.string().required(),
+    });
+    const navigate=useNavigate();
     const formik = useFormik({
-        initialValues:{
-            name:"",
-            email:"",
-            password:"",
+        initialValues: {
+            username: "",
+            email: "",
+            password: "",
         },
         validationSchema: registerValidationSchema,
-
         onSubmit: (values) => {
-            console.log(values);
+            register(values);
         },
-    })
-  return (
-    <div className='addForm'>
-        <form className='form' onSubmit={formik.handleSubmit}>
-        <h1>Register</h1>
-        <TextField id="outlined-basic" label="Name" variant="outlined" value={formik.values.name} onChange={formik.handleChange} name="name" onBlur={formik.handleBlur} error={formik.touched.name && formik.errors.name} helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null}/>
-        <TextField id="outlined-basic" label="E-mail" variant="outlined" value={formik.values.email} onChange={formik.handleChange} name="email" onBlur={formik.handleBlur} error={formik.touched.email && formik.errors.email} helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null}/>
-        <TextField id="outlined-basic" label="Password" variant="outlined" type='password' value={formik.values.trailer} onChange={formik.handleChange} name="password" onBlur={formik.handleBlur} error={formik.touched.password && formik.errors.password} helperText={formik.touched.password && formik.errors.password ? formik.errors.password : null}/>
-        <Button variant="contained" type='submit' onClick={() => navigate(`/`)} >Register</Button>
-        <h4>Have an account ? click Here <Link to='/'>Login</Link></h4>
-    </form>
-    </div>
-  )
+
+    });
+    const register=(values)=>{
+        fetch(`${api}/register`,{
+            method:"POST",
+            body:JSON.stringify(values),
+            headers:{"Content-Type":"application/json"}
+        }).then(()=>{
+            alert("Successfully Registered");
+        }).then(()=>navigate("/"))
+    }
+    return (
+        <form className='register' onSubmit={formik.handleSubmit}>
+            <h1>Register</h1>
+            <TextField id="outlined-basic"
+                label="UserName"
+                variant="outlined"
+                onChange={formik.handleChange}
+                name="username"
+                value={formik.values.username}
+                onBlur={formik.handleBlur}
+                error={formik.touched.username && formik.errors.username}
+                helperText={formik.touched.username && formik.errors.username ? formik.errors.username : null}
+            />
+            <TextField id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                name="email"
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null}
+            />
+
+            <TextField id="outlined-basic"
+                type="password"
+                label="Password"
+                variant="outlined"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                name="password"
+                onBlur={formik.handleBlur}
+                error={formik.touched.password && formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password ? formik.errors.password : null}
+            />
+            <Button variant="contained" type='submit'>Register</Button>
+            <h4>Already have an account<Link to="/login">Login</Link></h4>
+        </form>
+    )
 }
