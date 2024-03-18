@@ -1,5 +1,4 @@
 import React from 'react'
-import image from "./vikram.jpg"
 import "./Movie.css"
 import Counter from './Counter'
 import { useState } from 'react'    
@@ -8,7 +7,6 @@ import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import InfoIcon from '@mui/icons-material/Info';
 import { Card, CardActions, CardContent } from '@mui/material'
-import MovieList from './MovieList'
 import { useNavigate } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -32,7 +30,7 @@ export default function Movie({movieTake,getMovies}) {
     };
   return (
     <Card className='movie-container'>
-        <img className='movie-poster' src={movieTake.poster} />
+        <img className='movie-poster' src={movieTake.poster}  />
         <CardContent>
         <div className='movie-spec'>
             <h2 className='movie-name'>{movieTake.name}
@@ -53,14 +51,14 @@ export default function Movie({movieTake,getMovies}) {
         <IconButton 
         sx={{marginLeft: "auto"}}
         aria-label='editMovie'
-         onClick={() => navigate(`/portal/edit/${movieTake.id}`)}>
+         onClick={() => navigate(`/portal/edit/${movieTake._id}`)}>
         <EditIcon/>
       </IconButton>
 
       <IconButton 
         sx={{marginLeft: "auto"}}
         aria-label='delete'
-       onClick={() => deleteMovie(movieTake.id)}>
+       onClick={() => deleteMovie(movieTake._id)}>
         <DeleteIcon/>
       </IconButton>
         </CardActions>

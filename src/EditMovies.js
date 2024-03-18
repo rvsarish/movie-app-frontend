@@ -5,14 +5,15 @@ import { useFormik } from 'formik';
 import { useNavigate, useParams } from 'react-router-dom'
 import * as yup from "yup";
 import "./EditMovie.css";
-
+import { API } from './global.js';
 export default function EditMovie() {
     const {id}=useParams();
     const [movie,setmovie]=useState();
     const [show,setShow]=useState(false);
   
     useEffect(() => {
-        fetch(`https://65f16b79034bdbecc762702f.mockapi.io/Movie/${id}`,{
+        // fetch(`https://65f16b79034bdbecc762702f.mockapi.io/Movie/${id}`,{
+            fetch(`${API}/getone/${id}`,{
             method: "GET"
         })
             .then((data) => data.json())
@@ -53,7 +54,7 @@ function EditForm({movie}){
     const navigate=useNavigate();
     const editMovie = (updateMovie) => {
 
-        fetch(`https://65f16b79034bdbecc762702f.mockapi.io/Movie/${movie.id}`, {
+        fetch(``, {
           method:"PUT",
           body:JSON.stringify(updateMovie),
           headers:{"Content-type":"application/json"},
