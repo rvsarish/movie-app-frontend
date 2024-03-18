@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from "yup";
 import { useNavigate } from 'react-router-dom';
-import {api} from 'global.js';
+import {api} from './global.js';
 export default function AddMovie() {
     const movieValidationSchema = yup.object({
         name: yup.string().required(),
